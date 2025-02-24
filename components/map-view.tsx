@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { useTheme } from 'next-themes'
 import { Card, CardContent } from './ui/card'
 
 interface MarkerLocation {
@@ -43,12 +44,16 @@ export function MapView() {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
 
+  const { theme } = useTheme()
+
   useEffect(() => {
     if (!mapContainer.current) return
 
     const newMap = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/outdoors-v12',
+      style: theme === 'dark' 
+        ? 'mapbox://styles/mapbox/dark-v11' 
+        : 'mapbox://styles/mapbox/outdoors-v12',
       center: [17.5, 48.5], // Adjusted to better center the sample locations
       zoom: 5
     })
@@ -62,9 +67,9 @@ export function MapView() {
     sampleLocations.forEach(location => {
       const popupContent = document.createElement('div')
       popupContent.innerHTML = `
-        <div class="p-4 bg-white rounded-lg shadow-sm">
-          <h3 class="text-lg font-semibold mb-1">${location.title}</h3>
-          ${location.description ? `<p class="text-sm text-gray-600">${location.description}</p>` : ''}
+        <div class="p-4 bg-background rounded-lg shadow-sm">
+          <h3 class="text-lg font-semibold mb-1 text-foreground">${location.title}</h3>
+          ${location.description ? `<p class="text-sm text-muted-foreground">${location.description}</p>` : ''}
         </div>
       `
 
@@ -80,7 +85,7 @@ export function MapView() {
     return () => {
       map.current?.remove()
     }
-  }, [])
+  }, [theme])
 
   return (
     <div ref={mapContainer} className="w-full h-[calc(100vh-4rem)]" />
