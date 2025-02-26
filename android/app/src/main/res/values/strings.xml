@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CliffVibe</string>
+    <string name="title_activity_main">CliffVibe</string>
+    <string name="package_name">com.cliffvibe.app</string>
+    <string name="custom_url_scheme">com.cliffvibe.app</string>
+</resources>

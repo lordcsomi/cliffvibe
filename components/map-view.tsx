@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useTheme } from 'next-themes'
@@ -44,14 +44,20 @@ export function MapView() {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
 
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
-    if (!mapContainer.current) return
+    if (!mapContainer.current || !mounted) return
 
     const newMap = new mapboxgl.Map({
       container: mapContainer.current,
-      style: theme === 'dark' 
+      style: resolvedTheme === 'dark' 
         ? 'mapbox://styles/mapbox/dark-v11' 
         : 'mapbox://styles/mapbox/outdoors-v12',
       center: [17.5, 48.5], // Adjusted to better center the sample locations
@@ -85,7 +91,9 @@ export function MapView() {
     return () => {
       map.current?.remove()
     }
-  }, [theme])
+  }, [resolvedTheme, mounted])
+
+  if (!mounted) return null
 
   return (
     <div ref={mapContainer} className="w-full h-[calc(100vh-4rem)]" />
