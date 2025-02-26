@@ -47,6 +47,17 @@ export function MapView() {
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
+  // Add CSS to hide Mapbox logo and attribution
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.textContent = `
+      .mapboxgl-ctrl-bottom-left,
+      .mapboxgl-ctrl-bottom-right { display: none !important; }
+    `
+    document.head.appendChild(style)
+    return () => style.remove()
+  }, [])
+
   // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true)
@@ -61,7 +72,8 @@ export function MapView() {
         ? 'mapbox://styles/mapbox/dark-v11' 
         : 'mapbox://styles/mapbox/outdoors-v12',
       center: [17.5, 48.5], // Adjusted to better center the sample locations
-      zoom: 5
+      zoom: 5,
+      attributionControl: false
     })
 
     map.current = newMap
