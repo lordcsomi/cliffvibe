@@ -4,24 +4,19 @@ import Link from "next/link"
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 text-center">
-      <div className="max-w-3xl space-y-8">
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-6xl">
-          Discover Amazing Climbing Spots
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 pt-16 sm:p-4 text-center bg-gradient-to-b from-background to-background/50">
+      <div className="max-w-3xl space-y-10">
+        <h1 className="text-7xl font-black tracking-tighter sm:text-8xl bg-gradient-to-br from-foreground to-foreground/50 bg-clip-text text-transparent">
+          TAKE THE LEAP
         </h1>
-        <p className="text-lg text-muted-foreground">
-          Explore the world's best climbing locations with our interactive map.
-          Find detailed information about routes, difficulty levels, and more.
+        <p className="text-xl text-muted-foreground font-light tracking-wide">
+          Community-driven spots for thrill seekers.
+          <span className="block mt-2 text-foreground/70">Cliffs • Bridges • Buildings • Water • Urban</span>
         </p>
-        <div className="flex justify-center gap-4">
-          <Button asChild size="lg" className="text-lg px-8">
+        <div className="flex justify-center gap-6 pt-4">
+          <Button asChild size="lg" className="text-lg px-12 py-6 rounded-full hover:scale-105 transition-transform">
             <Link href="/map">
-              Explore Map
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="text-lg px-8">
-            <Link href="#features">
-              Learn More
+              EXPLORE
             </Link>
           </Button>
           <ThemeToggle />
