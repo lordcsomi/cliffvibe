@@ -1,6 +1,7 @@
 package com.cliffvibe.app;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 
