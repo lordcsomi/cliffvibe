@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -13,7 +12,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
-    private static final int SPLASH_DURATION = 2000; // 2 seconds
+    private static final int SPLASH_DURATION = 1000; // 1 seconds total
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +32,21 @@ public class SplashActivity extends AppCompatActivity {
             View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
 
-        // Start speed line animations
-        startSpeedLineAnimation(R.id.speed_line_1, R.anim.speed_line_1);
-        startSpeedLineAnimation(R.id.speed_line_2, R.anim.speed_line_2);
-        startSpeedLineAnimation(R.id.speed_line_3, R.anim.speed_line_3);
-
-        // Animate the icon with fade and random float
+        // Get views
         ImageView splashIcon = findViewById(R.id.splash_icon);
         
-        // Initial fade in
-        AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
-        fadeIn.setDuration(400);
-        
-        // Random floating movement
+        // Load animations
+        Animation fallIn = AnimationUtils.loadAnimation(this, R.anim.fall_in);
         Animation randomFloat = AnimationUtils.loadAnimation(this, R.anim.random_float);
+
+        // Start speed line animations after a slight delay
+        new Handler().postDelayed(this::startSpeedLines, 400);
         
-        splashIcon.startAnimation(fadeIn);
-        // Start random float after fade in
-        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+        // Start fall-in animation
+        fallIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
+                // Start floating animation after fall-in
                 splashIcon.startAnimation(randomFloat);
             }
             
@@ -62,8 +56,10 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationRepeat(Animation animation) {}
         });
+        
+        splashIcon.startAnimation(fallIn);
 
-        // Start main activity after delay
+        // Start main activity after duration
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
@@ -72,9 +68,17 @@ public class SplashActivity extends AppCompatActivity {
         }, SPLASH_DURATION);
     }
 
-    private void startSpeedLineAnimation(int viewId, int animationId) {
-        ImageView line = findViewById(viewId);
-        Animation animation = AnimationUtils.loadAnimation(this, animationId);
-        line.startAnimation(animation);
+    private void startSpeedLines() {
+        for (int i = 1; i <= 4; i++) {
+            ImageView line = findViewById(getResources().getIdentifier(
+                "speed_line_" + i, "id", getPackageName()));
+                
+            Animation speedAnim = AnimationUtils.loadAnimation(
+                this, 
+                getResources().getIdentifier(
+                    "speed_line_" + i, "anim", getPackageName()));
+                    
+            line.startAnimation(speedAnim);
+        }
     }
 }

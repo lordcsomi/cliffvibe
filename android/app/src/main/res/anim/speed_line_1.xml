@@ -4,14 +4,8 @@
     <translate
         android:fromYDelta="120%"
         android:toYDelta="-120%"
-        android:duration="700"
+        android:duration="150"
         android:startOffset="0"
         android:repeatCount="infinite"
         android:repeatMode="restart" />
-    <alpha
-        android:fromAlpha="0.4"
-        android:toAlpha="0.8"
-        android:duration="350"
-        android:repeatCount="infinite"
-        android:repeatMode="reverse" />
 </set>
